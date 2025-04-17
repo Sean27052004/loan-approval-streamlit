@@ -12,32 +12,34 @@ st.title("📊 Dự đoán phê duyệt khoản vay")
 st.header("🔍 Nhập thông tin khách hàng")
 
 # Các thông tin đầu vào
-credit_policy = st.selectbox("Có tuân thủ chính sách tín dụng?", [0, 1], key="credit_policy")
-purpose = st.selectbox("Mục đích vay", [
-    'credit_card', 'debt_consolidation', 'educational',
-    'home_improvement', 'major_purchase', 'small_business'
-], key="purpose")
-int_rate = st.number_input("Lãi suất (int.rate)", min_value=0.0, step=0.01)
-installment = st.number_input("Khoản trả góp hàng tháng", min_value=0.0, step=1.0)
-log_annual_inc = st.number_input("log(Thu nhập hàng năm)", min_value=0.0, step=0.1)
-dti = st.number_input("Tỷ lệ nợ trên thu nhập (dti)", min_value=0.0, step=0.1)
+credit_policy = st.selectbox(
+    "Có tuân thủ chính sách tín dụng?",
+    options=[1, 0],
+    format_func=lambda x: "✅ Tuân thủ" if x == 1 else "❌ Không tuân thủ",
+    key="credit_policy"
+)
+purpose = st.selectbox(
+    "Mục đích vay",
+    options=[
+        'credit_card', 'debt_consolidation', 'educational',
+        'home_improvement', 'major_purchase', 'small_business'
+    ],
+    format_func=lambda x: x.replace("_", " ").capitalize()
+)
+int_rate = st.number_input("Lãi suất (int.rate)", min_value=0.01, max_value=0.5, step=0.01)
+installment = st.number_input("Khoản trả góp hàng tháng", min_value=1.0, step=1.0)
+log_annual_inc = st.number_input("log(Thu nhập hàng năm)", min_value=7.0, max_value=13.0, step=0.1)
+dti = st.number_input("Tỷ lệ nợ trên thu nhập (dti)", min_value=0.0, max_value=60.0, step=0.1)
 fico = st.slider("Điểm FICO", 300, 850, step=1)
-days_with_cr_line = st.number_input("Số ngày có lịch sử tín dụng", min_value=0.0)
+days_with_cr_line = st.number_input("Số ngày có lịch sử tín dụng", min_value=1.0)
 revol_bal = st.number_input("Số dư nợ quay vòng (revol_bal)", min_value=0.0)
-revol_util = st.number_input("Tỷ lệ sử dụng tín dụng (revol_util)", min_value=0.0, max_value=100.0)
-inq_last_6mths = st.number_input("Số lần hỏi tín dụng 6 tháng", min_value=0, step=1)
-delinq_2yrs = st.number_input("Số lần trễ hạn 2 năm", min_value=0, step=1)
-pub_rec = st.number_input("Số bản ghi công khai", min_value=0, step=1)
+revol_util = st.number_input("Tỷ lệ sử dụng tín dụng (revol_util %)", min_value=0.0, max_value=150.0)
+inq_last_6mths = st.number_input("Số lần hỏi tín dụng 6 tháng", min_value=0, max_value=10, step=1)
+delinq_2yrs = st.number_input("Số lần trễ hạn 2 năm", min_value=0, max_value=10, step=1)
+pub_rec = st.number_input("Số bản ghi công khai", min_value=0, max_value=10, step=1)
 
 # Nút submit
 if st.button("🚀 Dự đoán kết quả"):
-    # Lấy giá trị mục đích vay từ dropdown
-    purpose = st.selectbox("Mục đích vay", [
-        'credit_card', 'debt_consolidation', 'educational',
-        'home_improvement', 'major_purchase', 'small_business'
-    ])
-
-    # Chuyển thành DataFrame
     input_dict = {
         'credit.policy': [credit_policy],
         'int.rate': [int_rate],
@@ -58,13 +60,14 @@ if st.button("🚀 Dự đoán kết quả"):
         'purpose_major_purchase': [1 if purpose == 'major_purchase' else 0],
         'purpose_small_business': [1 if purpose == 'small_business' else 0],
     }
+
     new_df = pd.DataFrame(input_dict)
 
-    # Tạo feature phụ
+    # Feature engineering
     new_df["installment_income_ratio"] = new_df["installment"] / np.exp(new_df["log.annual.inc"])
     new_df["fico_squared"] = new_df["fico"] ** 2
     new_df["dti_squared"] = new_df["dti"] ** 2
-    new_df["total_debt"] = new_df["revol.bal"] + new_df["installment"] * 12  # ĐÃ SỬA CÔNG THỨC
+    new_df["total_debt"] = new_df["revol.bal"] + new_df["installment"] * 12
     new_df["int.rate_dti"] = new_df["int.rate"] * new_df["dti"]
     new_df["log.annual.inc_installment"] = new_df["log.annual.inc"] * new_df["installment"]
 
