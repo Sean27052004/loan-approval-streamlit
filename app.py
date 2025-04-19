@@ -26,9 +26,11 @@ purpose = st.selectbox(
     ],
     format_func=lambda x: x.replace("_", " ").capitalize()
 )
-int_rate = st.number_input("Lãi suất (int.rate)", min_value=0.01, max_value=0.5, step=0.01)
+interest_rate_percent = st.number_input("Lãi suất (%/năm)", min_value=1.0, max_value=50.0, step=0.5)
+int_rate = interest_rate_percent / 100
 installment = st.number_input("Khoản trả góp hàng tháng", min_value=1.0, step=1.0)
-log_annual_inc = st.number_input("log(Thu nhập hàng năm)", min_value=7.0, max_value=13.0, step=0.1)
+annual_inc = st.number_input("Thu nhập hàng năm (USD)", min_value=1000.0, max_value=500000.0, step=1000.0)
+log_annual_inc = np.log(annual_inc)
 dti = st.number_input("Tỷ lệ nợ trên thu nhập (dti)", min_value=0.0, max_value=60.0, step=0.1)
 fico = st.slider("Điểm FICO", 300, 850, step=1)
 days_with_cr_line = st.number_input("Số ngày có lịch sử tín dụng", min_value=1.0)
