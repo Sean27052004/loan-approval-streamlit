@@ -86,3 +86,16 @@ if st.button("🚀 Dự đoán kết quả"):
         st.success("✅ Khoản vay được PHÊ DUYỆT")
     else:
         st.error("❌ Khoản vay KHÔNG được phê duyệt")
+    # Phân nhóm tín dụng
+    if prob < 0.05:
+        credit_score = "A - Rất tốt"
+    elif prob < 0.15:
+        credit_score = "B - Tốt"
+    elif prob < 0.30:
+        credit_score = "C - Trung bình"
+    elif prob < 0.50:
+        credit_score = "D - Rủi ro"
+    else:
+        credit_score = "E - Rất rủi ro"
+
+    st.info(f"🏷️ Nhóm tín dụng nội bộ: **{credit_score}**")
