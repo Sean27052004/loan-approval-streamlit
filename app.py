@@ -27,7 +27,11 @@ if st.sidebar.button("📋 Mẫu 4"):
     st.session_state.sample_data = "sample_4"
 if st.sidebar.button("📋 Mẫu 5"):
     st.session_state.sample_data = "sample_5"
-
+if st.sidebar.button("📋 Mẫu 6"):
+    st.session_state.sample_data = "sample_6"
+if st.sidebar.button("📋 Mẫu 7"):
+    st.session_state.sample_data = "sample_7"
+    
 # Gán dữ liệu mẫu
 if st.session_state.sample_data == "sample_1":
     st.session_state.credit_policy = 1
@@ -109,6 +113,37 @@ elif st.session_state.sample_data == "sample_5":
     st.session_state.pub_rec = 1
     st.session_state.sample_data = None
 
+elif st.session_state.sample_data == "sample_6":
+    st.session_state.credit_policy = 1
+    st.session_state.purpose = "credit_card"
+    st.session_state.interest_rate_percent = 8.0
+    st.session_state.installment = 200.0
+    st.session_state.annual_inc = 150000.0
+    st.session_state.dti = 10.0
+    st.session_state.fico = 800
+    st.session_state.days_with_cr_line = 5000.0
+    st.session_state.revol_bal = 5000.0
+    st.session_state.revol_util = 20.0
+    st.session_state.inq_last_6mths = 0
+    st.session_state.delinq_2yrs = 0
+    st.session_state.pub_rec = 0
+    st.session_state.sample_data = None
+
+elif st.session_state.sample_data == "sample_7":
+    st.session_state.credit_policy = 1
+    st.session_state.purpose = "debt_consolidation"
+    st.session_state.interest_rate_percent = 11.5
+    st.session_state.installment = 350.0
+    st.session_state.annual_inc = 100000.0
+    st.session_state.dti = 18.0
+    st.session_state.fico = 740
+    st.session_state.days_with_cr_line = 3500.0
+    st.session_state.revol_bal = 9000.0
+    st.session_state.revol_util = 30.0
+    st.session_state.inq_last_6mths = 1
+    st.session_state.delinq_2yrs = 0
+    st.session_state.pub_rec = 0
+    st.session_state.sample_data = None
 
 # Bắt đầu lấy input từ user hoặc session_state
 
