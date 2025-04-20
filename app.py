@@ -152,3 +152,62 @@ pub_rec = st.number_input(
     value=st.session_state.get("pub_rec", 0),
     key="pub_rec"
 )
+# Nút submit
+if st.button("🚀 Dự đoán kết quả"):
+    input_dict = {
+        'credit.policy': [credit_policy],
+        'int.rate': [int_rate],
+        'installment': [installment],
+        'log.annual.inc': [log_annual_inc],
+        'dti': [dti],
+        'fico': [fico],
+        'days.with.cr.line': [days_with_cr_line],
+        'revol.bal': [revol_bal],
+        'revol.util': [revol_util],
+        'inq.last.6mths': [inq_last_6mths],
+        'delinq.2yrs': [delinq_2yrs],
+        'pub.rec': [pub_rec],
+        'purpose_credit_card': [1 if purpose == 'credit_card' else 0],
+        'purpose_debt_consolidation': [1 if purpose == 'debt_consolidation' else 0],
+        'purpose_educational': [1 if purpose == 'educational' else 0],
+        'purpose_home_improvement': [1 if purpose == 'home_improvement' else 0],
+        'purpose_major_purchase': [1 if purpose == 'major_purchase' else 0],
+        'purpose_small_business': [1 if purpose == 'small_business' else 0],
+    }
+
+    new_df = pd.DataFrame(input_dict)
+
+    # Feature engineering
+    new_df["installment_income_ratio"] = new_df["installment"] / np.exp(new_df["log.annual.inc"])
+    new_df["fico_squared"] = new_df["fico"] ** 2
+    new_df["dti_squared"] = new_df["dti"] ** 2
+    new_df["total_debt"] = new_df["revol.bal"] + new_df["installment"] * 12
+    new_df["int.rate_dti"] = new_df["int.rate"] * new_df["dti"]
+    new_df["log.annual.inc_installment"] = new_df["log.annual.inc"] * new_df["installment"]
+
+    # Tiền xử lý
+    X_final = preprocessor.transform(new_df)
+
+    # Dự đoán
+    prob = model.predict_proba(X_final)[0, 1]
+    approved = prob < 0.2
+
+    st.subheader("🎯 Kết quả:")
+    st.write(f"Xác suất vỡ nợ: **{prob:.2%}**")
+    if approved:
+        st.success("✅ Khoản vay được PHÊ DUYỆT")
+    else:
+        st.error("❌ Khoản vay KHÔNG được phê duyệt")
+    # Phân nhóm tín dụng
+    if prob < 0.05:
+        credit_score = "A - Rất tốt"
+    elif prob < 0.15:
+        credit_score = "B - Tốt"
+    elif prob < 0.30:
+        credit_score = "C - Trung bình"
+    elif prob < 0.50:
+        credit_score = "D - Rủi ro"
+    else:
+        credit_score = "E - Rất rủi ro"
+
+    st.info(f"🏷️ Nhóm tín dụng nội bộ: **{credit_score}**")
