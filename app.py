@@ -10,7 +10,53 @@ preprocessor = joblib.load("preprocessor.pkl")
 st.title("📊 Dự đoán phê duyệt khoản vay")
 
 st.header("🔍 Nhập thông tin khách hàng")
+# ================= Sidebar: Dữ liệu mẫu =====================
+st.sidebar.markdown("## ⚙️ Dữ liệu mẫu")
 
+if st.sidebar.button("📋 Mẫu: Khách tốt"):
+    st.session_state.credit_policy = 1
+    st.session_state.purpose = "credit_card"
+    st.session_state.interest_rate_percent = 10.5
+    st.session_state.installment = 300.0
+    st.session_state.annual_inc = 120000.0
+    st.session_state.dti = 15.0
+    st.session_state.fico = 750
+    st.session_state.days_with_cr_line = 4000.0
+    st.session_state.revol_bal = 15000.0
+    st.session_state.revol_util = 30.0
+    st.session_state.inq_last_6mths = 1
+    st.session_state.delinq_2yrs = 0
+    st.session_state.pub_rec = 0
+
+if st.sidebar.button("📋 Mẫu: Trung bình"):
+    st.session_state.credit_policy = 1
+    st.session_state.purpose = "debt_consolidation"
+    st.session_state.interest_rate_percent = 18.0
+    st.session_state.installment = 500.0
+    st.session_state.annual_inc = 60000.0
+    st.session_state.dti = 25.0
+    st.session_state.fico = 670
+    st.session_state.days_with_cr_line = 2500.0
+    st.session_state.revol_bal = 20000.0
+    st.session_state.revol_util = 60.0
+    st.session_state.inq_last_6mths = 2
+    st.session_state.delinq_2yrs = 1
+    st.session_state.pub_rec = 0
+
+if st.sidebar.button("📋 Mẫu: Rủi ro cao"):
+    st.session_state.credit_policy = 0
+    st.session_state.purpose = "small_business"
+    st.session_state.interest_rate_percent = 30.0
+    st.session_state.installment = 900.0
+    st.session_state.annual_inc = 30000.0
+    st.session_state.dti = 40.0
+    st.session_state.fico = 590
+    st.session_state.days_with_cr_line = 1200.0
+    st.session_state.revol_bal = 5000.0
+    st.session_state.revol_util = 95.0
+    st.session_state.inq_last_6mths = 4
+    st.session_state.delinq_2yrs = 2
+    st.session_state.pub_rec = 1
 # Các thông tin đầu vào
 credit_policy = st.selectbox(
     "Có tuân thủ chính sách tín dụng?",
