@@ -16,16 +16,20 @@ if "sample_data" not in st.session_state:
     st.session_state.sample_data = None
 
 # Sidebar: chọn mẫu dữ liệu
-st.sidebar.title("🎯 Chọn dữ liệu mẫu")
-if st.sidebar.button("📋 Mẫu: Khách tốt"):
-    st.session_state.sample_data = "good"
-if st.sidebar.button("📋 Mẫu: Trung bình"):
-    st.session_state.sample_data = "average"
-if st.sidebar.button("📋 Mẫu: Rủi ro cao"):
-    st.session_state.sample_data = "risky"
+st.sidebar.title("🎯 Chọn mẫu dữ liệu")
+if st.sidebar.button("📋 Mẫu 1"):
+    st.session_state.sample_data = "sample_1"
+if st.sidebar.button("📋 Mẫu 2"):
+    st.session_state.sample_data = "sample_2"
+if st.sidebar.button("📋 Mẫu 3"):
+    st.session_state.sample_data = "sample_3"
+if st.sidebar.button("📋 Mẫu 4"):
+    st.session_state.sample_data = "sample_4"
+if st.sidebar.button("📋 Mẫu 5"):
+    st.session_state.sample_data = "sample_5"
 
 # Gán dữ liệu mẫu
-if st.session_state.sample_data == "good":
+if st.session_state.sample_data == "sample_1":
     st.session_state.credit_policy = 1
     st.session_state.purpose = "credit_card"
     st.session_state.interest_rate_percent = 10.5
@@ -41,7 +45,7 @@ if st.session_state.sample_data == "good":
     st.session_state.pub_rec = 0
     st.session_state.sample_data = None
 
-elif st.session_state.sample_data == "average":
+elif st.session_state.sample_data == "sample_2":
     st.session_state.credit_policy = 1
     st.session_state.purpose = "debt_consolidation"
     st.session_state.interest_rate_percent = 18.0
@@ -57,7 +61,7 @@ elif st.session_state.sample_data == "average":
     st.session_state.pub_rec = 0
     st.session_state.sample_data = None
 
-elif st.session_state.sample_data == "risky":
+elif st.session_state.sample_data == "sample_3":
     st.session_state.credit_policy = 0
     st.session_state.purpose = "small_business"
     st.session_state.interest_rate_percent = 29.5
@@ -73,9 +77,40 @@ elif st.session_state.sample_data == "risky":
     st.session_state.pub_rec = 1
     st.session_state.sample_data = None
 
+elif st.session_state.sample_data == "sample_4":
+    st.session_state.credit_policy = 1
+    st.session_state.purpose = "home_improvement"
+    st.session_state.interest_rate_percent = 14.0
+    st.session_state.installment = 450.0
+    st.session_state.annual_inc = 80000.0
+    st.session_state.dti = 20.0
+    st.session_state.fico = 720
+    st.session_state.days_with_cr_line = 3000.0
+    st.session_state.revol_bal = 10000.0
+    st.session_state.revol_util = 40.0
+    st.session_state.inq_last_6mths = 2
+    st.session_state.delinq_2yrs = 0
+    st.session_state.pub_rec = 0
+    st.session_state.sample_data = None
+
+elif st.session_state.sample_data == "sample_5":
+    st.session_state.credit_policy = 0
+    st.session_state.purpose = "educational"
+    st.session_state.interest_rate_percent = 24.5
+    st.session_state.installment = 700.0
+    st.session_state.annual_inc = 40000.0
+    st.session_state.dti = 38.0
+    st.session_state.fico = 630
+    st.session_state.days_with_cr_line = 1800.0
+    st.session_state.revol_bal = 16000.0
+    st.session_state.revol_util = 95.0
+    st.session_state.inq_last_6mths = 3
+    st.session_state.delinq_2yrs = 1
+    st.session_state.pub_rec = 1
+    st.session_state.sample_data = None
+
+
 # Bắt đầu lấy input từ user hoặc session_state
-st.title("📊 Dự đoán phê duyệt khoản vay")
-st.header("🔍 Nhập thông tin khách hàng")
 
 credit_policy = st.selectbox(
     "Có tuân thủ chính sách tín dụng?",
