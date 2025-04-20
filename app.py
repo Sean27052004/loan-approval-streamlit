@@ -1,5 +1,6 @@
 import streamlit as st
 import numpy as np
+import pandas as pd
 
 # Flag để gán dữ liệu mẫu chỉ một lần
 if "sample_data" not in st.session_state:
