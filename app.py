@@ -2,6 +2,14 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 
+# Load mô hình và preprocessor
+model = joblib.load("xgb_model.pkl")
+preprocessor = joblib.load("preprocessor.pkl")
+
+st.title("📊 Dự đoán phê duyệt khoản vay")
+
+st.header("🔍 Nhập thông tin khách hàng")
+
 # Flag để gán dữ liệu mẫu chỉ một lần
 if "sample_data" not in st.session_state:
     st.session_state.sample_data = None
