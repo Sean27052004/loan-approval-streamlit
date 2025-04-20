@@ -89,6 +89,7 @@ interest_rate_percent = st.number_input(
     value=st.session_state.get("interest_rate_percent", 10.0),
     key="interest_rate_percent"
 )
+int_rate = interest_rate_percent / 100
 
 installment = st.number_input(
     "Khoản trả góp hàng tháng", min_value=1.0, step=1.0,
